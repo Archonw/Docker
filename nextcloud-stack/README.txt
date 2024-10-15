@@ -1,5 +1,5 @@
 Nach dem Ausführen des Scriptes und der Ersteinrichtung der Nextcloud, werden in der Verwaltungsübersicht der Nextcloud einige Fehler auftreten.
-Einige davon werden mit einige zusätzlichen Einträgen in der Nextcloud config.php. Dazu öffnen wir im Terminal mittels z.B. Nano:
+Einige davon werden mit einigen zusätzlichen Zeilen in der Nextcloud config.php behandelt. Dazu im Terminal mittels z.B. Nano folgende Pfad öffnen:
 
 nano /mnt/docker/Nextcloud/config/www/nextcloud/config/config.php
 
