@@ -1,4 +1,4 @@
-Diese Zeilen in der config.php der Nextcloud am Ende einfügen.
+Diese Zeilen in der /mnt/docker/Nextcloud/  config.php der Nextcloud am Ende einfügen.
 
   'default_phone_region' => 'DE',
   'maintenance_window_start' => 1,
