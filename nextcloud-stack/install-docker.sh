@@ -7,14 +7,16 @@ echo "Diese Daten werden in der Datei /mnt/docker/Mariadb/docker-compose.yml ges
 # Benutzereingaben für MariaDB-Konfiguration
 echo "Bitte geben Sie ein MySQL Root Passwort ein:"
 read MYSQL_ROOT_PASSWORD
-echo "Bitte geben Sie einen MySQL Datenbanknamen ein (Standard: nextcloud):"
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+echo "Bitte geben Sie einen Namen für das Datenbankkonto ein:"
 read MYSQL_DATABASE
 MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud}
-echo "Bitte geben Sie einen MySQL Benutzernamen ein (Standard: nextcloud):"
+echo "Bitte geben Sie einen Datenbank-Name ein:"
 read MYSQL_USER
 MYSQL_USER=${MYSQL_USER:-nextcloud}
-echo "Bitte geben Sie ein MySQL Benutzerpasswort ein:"
+echo "Bitte geben Sie ein Datenbank-Passwort ein:"
 read MYSQL_PASSWORD
+MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
 # Prüfen, ob curl installiert ist, falls nicht, curl installieren
 if ! command -v curl &> /dev/null
@@ -28,15 +30,18 @@ fi
 echo "Installing Docker..."
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh  # Docker-Installationsskript ausführen
+sudo apt install docker-compose
 
 # Verzeichnisse erstellen
 echo "Creating directories..."
-mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb
+sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
+sudo chown -R 1000:1000 /mnt/data /mnt/docker
 
-# docker-compose.yml für MariaDB erstellen
-echo "Creating MariaDB docker-compose.yml..."
-cat <<EOL > /mnt/docker/Mariadb/docker-compose.yml
----
+# docker-compose.yml für die Container erstellen
+echo "Creating /mnt/docker/docker-compose.yml"
+cat <<EOL > /mnt/docker/docker-compose.yml
+version: '3.8'
+
 services:
   mariadb:
     image: lscr.io/linuxserver/mariadb:latest
@@ -45,25 +50,19 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Berlin
-      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-      - MYSQL_DATABASE=$MYSQL_DATABASE
-      - MYSQL_USER=$MYSQL_USER
-      - MYSQL_PASSWORD=$MYSQL_PASSWORD
-      - REMOTE_SQL=http://URL1/your.sql,https://URL2/your.sql #optional
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud}
+      - MYSQL_USER=${MYSQL_USER:-nextcloud}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - /mnt/docker/Mariadb/config:/config
+      - /mnt/data:/data
     ports:
       - 3306:3306
     restart: unless-stopped
-EOL
+    networks:
+      - nextcloud_network
 
-echo "Die Konfiguration wurde in /mnt/docker/Mariadb/docker-compose.yml gespeichert."
-
-# docker-compose.yml für Nextcloud erstellen
-echo "Creating Nextcloud docker-compose.yml..."
-cat <<EOL > /mnt/docker/Nextcloud/docker-compose.yml
----
-services:
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
@@ -76,15 +75,15 @@ services:
       - /mnt/data:/data
     ports:
       - 443:443
+    depends_on:
+      - mariadb
     restart: unless-stopped
-EOL
+    networks:
+      - nextcloud_network
 
-# docker-compose.yml für Nginx Proxy Manager erstellen
-echo "Creating Nginx Proxy Manager docker-compose.yml..."
-cat <<EOL > /mnt/docker/Nginx-Proxy-Manager/docker-compose.yml
-services:
-  app:
+  nginx-proxy-manager:
     image: 'docker.io/jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
       - '20080:80'
@@ -93,48 +92,14 @@ services:
     volumes:
       - /mnt/docker/Nginx-Proxy-Manager/data:/data
       - /mnt/docker/Nginx-Proxy-Manager/letsencrypt:/etc/letsencrypt
+    networks:
+      - nextcloud_network
+
+networks:
+  nextcloud_network:
+    driver: bridge
 EOL
 
-# MariaDB Container starten
-echo "Starting MariaDB..."
-docker run -d \
-  --name mariadb \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Europe/Berlin \
-  -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD \
-  -e MYSQL_DATABASE=$MYSQL_DATABASE \
-  -e MYSQL_USER=$MYSQL_USER \
-  -e MYSQL_PASSWORD=$MYSQL_PASSWORD \
-  -v /mnt/docker/Mariadb/config:/config \
-  -p 3306:3306 \
-  --restart unless-stopped \
-  lscr.io/linuxserver/mariadb:latest
+cd /mnt/docker/ && docker-compose up -d
 
-# Nextcloud Container starten
-echo "Starting Nextcloud..."
-docker run -d \
-  --name nextcloud \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Europe/Berlin \
-  -v /mnt/docker/Nextcloud/config:/config \
-  -v /mnt/data:/data \
-  -p 443:443 \
-  --restart unless-stopped \
-  lscr.io/linuxserver/nextcloud:latest
-
-# Nginx Proxy Manager Container starten
-echo "Starting Nginx Proxy Manager..."
-docker run -d \
-  --name nginx-proxy-manager \
-  -v /mnt/docker/Nginx-Proxy-Manager/data:/data \
-  -v /mnt/docker/Nginx-Proxy-Manager/letsencrypt:/etc/letsencrypt \
-  -p 20080:80 \
-  -p 20081:81 \
-  -p 20443:443 \
-  --restart unless-stopped \
-  jc21/nginx-proxy-manager:latest
-
-echo "Alle Container wurden erfolgreich gestartet."
-
+echo "Alle Container wurden erfolgreich gestartet." 
