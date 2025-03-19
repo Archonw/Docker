@@ -6,24 +6,14 @@ nano /mnt/docker/Nextcloud/config/www/nextcloud/config/config.php
 
 und fügen folgendes am Ende aber vor der letzten Klammer  );  ein:
 
+  'memcache.locking' => '\\OC\\Memcache\\Redis',
+  'redis' => [
+    'host' => 'redis',
+    'port' => 6379,
+    'timeout' => 0.0,
+   ],
   'default_phone_region' => 'DE',
   'maintenance_window_start' => 1,
-  'memcache.local' => '\OC\Memcache\APCu', 
-  'memcache.locking' => '\OC\Memcache\Redis',
-  'redis' => array(
-     'host' => 'localhost',
-     'port' => 6379,
-     'timeout' => 0.0,
-     'password' => '',  'default_phone_region' => 'DE',
-  'maintenance_window_start' => 1,
-  'memcache.local' => '\OC\Memcache\APCu', 
-  'memcache.locking' => '\OC\Memcache\Redis',
-  'redis' => array(
-     'host' => 'localhost',
-     'port' => 6379,
-     'timeout' => 0.0,
-     'password' => '', 
-      ),
 
 
 Abspeichern und schließen mittels Strg+o und Strg+x
