@@ -42,8 +42,13 @@ sudo apt install -y docker-compose
 # Verzeichnisse erstellen
 echo "Creating directories..."
 sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
+<<<<<<< HEAD:nextcloud-stack/nextcloud-stack-installer.sh
 sudo chown -R "$USER_ID:$GROUP_ID" /mnt/data /mnt/docker
 sudo usermod -aG docker "$DOCKER_USER"
+=======
+sudo chown -R 1000:1000 /mnt/data /mnt/docker
+sudo usermod -aG docker nextcloud
+>>>>>>> 54ce4f418027e16f3b9f84b310ee1832f974ea41:nextcloud-stack/install-docker.sh
 
 # docker-compose.yml für die Container erstellen
 echo "Creating /mnt/docker/docker-compose.yml"
