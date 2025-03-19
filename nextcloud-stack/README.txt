@@ -23,9 +23,9 @@ Jetzt werden wir noch zwei Befehel ausführen, um einige fehlende Einträge in d
 Dazu folgende zwei Befehle im Terminal ausführen.
 
 
-docker exec -it Nextcloud occ maintenance:repair --include-expensive
+docker exec -it nextcloud occ maintenance:repair --include-expensive
 
-docker exec -it occ db:add-missing-indices
+docker exec -it nextcloud occ db:add-missing-indices
 
 
 Jetzt sollten die meisten Warnungen verschuwnden sein.
