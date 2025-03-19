@@ -3,17 +3,28 @@
 # Benutzer informieren
 echo "Die folgenden Eingaben betreffen die MariaDB-Datenbankkonfiguration."
 echo "Diese Daten werden in der Datei /mnt/docker/Mariadb/docker-compose.yml gespeichert und werden bei der Ersteinrichtung von Nextcloud erneut benötigt."
+echo ""
 
 # Benutzereingaben für MariaDB-Konfiguration
 read -p "Bitte geben Sie ein MySQL Root Passwort ein: " MYSQL_ROOT_PASSWORD
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+echo ""
+
 read -p "Bitte geben Sie einen Namen für das Datenbankkonto ein (Standard: nextcloud): " MYSQL_DATABASE
 MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud}
+echo ""
+
 read -p "Bitte geben Sie einen Datenbank-Namen ein (Standard: nextcloud): " MYSQL_USER
 MYSQL_USER=${MYSQL_USER:-nextcloud}
+echo ""
+
 read -p "Bitte geben Sie ein Datenbank-Passwort ein: " MYSQL_PASSWORD
+MYSQL_PASSWORD=${MYSQL_PASSWORD}
+echo ""
 
 # Benutzer für Docker-Gruppe abfragen
-read -p "Welchen Benutzer möchten Sie zur Docker-Gruppe hinzufügen? " DOCKER_USER
+read -p "Welchen Linux-Benutzer wird die Docker-Container verwalten?: " DOCKER_USER
+echo ""
 
 # UID und GID des Benutzers ermitteln
 USER_ID=$(id -u "$DOCKER_USER")
@@ -25,6 +36,7 @@ if [ -z "$USER_ID" ] || [ -z "$GROUP_ID" ]; then
 fi
 
 echo "Benutzer $DOCKER_USER hat UID=$USER_ID und GID=$GROUP_ID."
+echo ""
 
 # Prüfen, ob curl installiert ist, falls nicht, curl installieren
 if ! command -v curl &> /dev/null; then
@@ -32,6 +44,7 @@ if ! command -v curl &> /dev/null; then
     sudo apt-get update
     sudo apt-get install -y curl
 fi
+echo ""
 
 # Docker und Docker Compose Installation
 echo "Installing Docker..."
@@ -42,13 +55,8 @@ sudo apt install -y docker-compose
 # Verzeichnisse erstellen
 echo "Creating directories..."
 sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
-<<<<<<< HEAD:nextcloud-stack/nextcloud-stack-installer.sh
 sudo chown -R "$USER_ID:$GROUP_ID" /mnt/data /mnt/docker
 sudo usermod -aG docker "$DOCKER_USER"
-=======
-sudo chown -R 1000:1000 /mnt/data /mnt/docker
-sudo usermod -aG docker nextcloud
->>>>>>> 54ce4f418027e16f3b9f84b310ee1832f974ea41:nextcloud-stack/install-docker.sh
 
 # docker-compose.yml für die Container erstellen
 echo "Creating /mnt/docker/docker-compose.yml"
@@ -138,9 +146,24 @@ done
 
 if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
     SERVER_IP=$(hostname -I | awk '{print $1}')
+    echo ""
     echo "✅ Alle Container wurden erfolgreich gestartet."
+    echo ""
     echo "Nextcloud ist jetzt unter folgender Adresse erreichbar:"
-    echo "🌐 https://${SERVER_IP}:443"
+    echo "   🌐 https://${SERVER_IP}:443"
+
+    echo ""
+    echo "📌 **Datenbank-Konfiguration für die Nextcloud-Einrichtung**"
+    echo "------------------------------------------"
+    echo " 🔹 **Datenbank-Typ:**      MySQL/MariaDB"
+    echo " 🔹 **Datenbank-Host:**     mariadb:443"
+    echo " 🔹 **Datenbank-Name:**     ${MYSQL_DATABASE}"
+    echo " 🔹 **Datenbank-Benutzer:** ${MYSQL_USER}"
+    echo " 🔹 **Datenbank-Passwort:** ${MYSQL_PASSWORD}"
+    echo "------------------------------------------"
+    echo "ℹ️  Bitte notiere dir diese Daten für die Ersteinrichtung in der Nextcloud-Weboberfläche."
+    echo ""
+
 else
     echo "❌ ACHTUNG: Einige Container konnten nicht gestartet werden!"
     for CONTAINER in "${FAILED_CONTAINERS[@]}"; do
@@ -150,4 +173,3 @@ else
     echo "   docker logs <container_name>"
     exit 1
 fi
-
