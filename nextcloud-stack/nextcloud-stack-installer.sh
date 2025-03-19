@@ -5,23 +5,30 @@ echo "Die folgenden Eingaben betreffen die MariaDB-Datenbankkonfiguration."
 echo "Diese Daten werden in der Datei /mnt/docker/Mariadb/docker-compose.yml gespeichert und werden bei der Ersteinrichtung von Nextcloud erneut benötigt."
 
 # Benutzereingaben für MariaDB-Konfiguration
-echo "Bitte geben Sie ein MySQL Root Passwort ein:"
-read MYSQL_ROOT_PASSWORD
-MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-echo "Bitte geben Sie einen Namen für das Datenbankkonto ein:"
-read MYSQL_DATABASE
+read -p "Bitte geben Sie ein MySQL Root Passwort ein: " MYSQL_ROOT_PASSWORD
+read -p "Bitte geben Sie einen Namen für das Datenbankkonto ein (Standard: nextcloud): " MYSQL_DATABASE
 MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud}
-echo "Bitte geben Sie einen Datenbank-Name ein:"
-read MYSQL_USER
+read -p "Bitte geben Sie einen Datenbank-Namen ein (Standard: nextcloud): " MYSQL_USER
 MYSQL_USER=${MYSQL_USER:-nextcloud}
-echo "Bitte geben Sie ein Datenbank-Passwort ein:"
-read MYSQL_PASSWORD
-MYSQL_PASSWORD=${MYSQL_PASSWORD}
+read -p "Bitte geben Sie ein Datenbank-Passwort ein: " MYSQL_PASSWORD
+
+# Benutzer für Docker-Gruppe abfragen
+read -p "Welchen Benutzer möchten Sie zur Docker-Gruppe hinzufügen? " DOCKER_USER
+
+# UID und GID des Benutzers ermitteln
+USER_ID=$(id -u "$DOCKER_USER")
+GROUP_ID=$(id -g "$DOCKER_USER")
+
+if [ -z "$USER_ID" ] || [ -z "$GROUP_ID" ]; then
+    echo "Fehler: Der Benutzer '$DOCKER_USER' existiert nicht."
+    exit 1
+fi
+
+echo "Benutzer $DOCKER_USER hat UID=$USER_ID und GID=$GROUP_ID."
 
 # Prüfen, ob curl installiert ist, falls nicht, curl installieren
-if ! command -v curl &> /dev/null
-then
-    echo "curl is not installed. Installing curl..."
+if ! command -v curl &> /dev/null; then
+    echo "curl ist nicht installiert. Installation wird durchgeführt..."
     sudo apt-get update
     sudo apt-get install -y curl
 fi
@@ -30,12 +37,13 @@ fi
 echo "Installing Docker..."
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh  # Docker-Installationsskript ausführen
-sudo apt install docker-compose
+sudo apt install -y docker-compose
 
 # Verzeichnisse erstellen
 echo "Creating directories..."
 sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
-sudo chown -R 1000:1000 /mnt/data /mnt/docker
+sudo chown -R "$USER_ID:$GROUP_ID" /mnt/data /mnt/docker
+sudo usermod -aG docker "$DOCKER_USER"
 
 # docker-compose.yml für die Container erstellen
 echo "Creating /mnt/docker/docker-compose.yml"
@@ -47,12 +55,12 @@ services:
     image: lscr.io/linuxserver/mariadb:latest
     container_name: mariadb
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=$USER_ID
+      - PGID=$GROUP_ID
       - TZ=Europe/Berlin
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud}
-      - MYSQL_USER=${MYSQL_USER:-nextcloud}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - /mnt/docker/Mariadb/config:/config
@@ -67,8 +75,8 @@ services:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=$USER_ID
+      - PGID=$GROUP_ID
       - TZ=Europe/Berlin
     volumes:
       - /mnt/docker/Nextcloud/config:/config
@@ -100,6 +108,41 @@ networks:
     driver: bridge
 EOL
 
+
 cd /mnt/docker/ && docker-compose up -d
 
-echo "Alle Container wurden erfolgreich gestartet." 
+
+SERVER_IP=$(hostname -I | awk '{print $1}')
+
+
+# Warten, damit Container Zeit haben zu starten
+sleep 5
+
+
+# Überprüfen, ob alle Container im Status "running" sind
+CONTAINERS=("mariadb" "nextcloud" "nginx-proxy-manager")
+FAILED_CONTAINERS=()
+
+for CONTAINER in "${CONTAINERS[@]}"; do
+    STATUS=$(docker inspect -f '{{.State.Running}}' "$CONTAINER" 2>/dev/null)
+
+    if [ "$STATUS" != "true" ]; then
+        FAILED_CONTAINERS+=("$CONTAINER")
+    fi
+done
+
+if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
+    SERVER_IP=$(hostname -I | awk '{print $1}')
+    echo "✅ Alle Container wurden erfolgreich gestartet."
+    echo "Nextcloud ist jetzt unter folgender Adresse erreichbar:"
+    echo "🌐 https://${SERVER_IP}:443"
+else
+    echo "❌ ACHTUNG: Einige Container konnten nicht gestartet werden!"
+    for CONTAINER in "${FAILED_CONTAINERS[@]}"; do
+        echo "   - $CONTAINER (Status: nicht 'running')"
+    done
+    echo "📄 Bitte überprüfe die Logs mit:"
+    echo "   docker logs <container_name>"
+    exit 1
+fi
+
