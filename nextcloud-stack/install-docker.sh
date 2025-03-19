@@ -36,6 +36,7 @@ sudo apt install docker-compose
 echo "Creating directories..."
 sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
 sudo chown -R 1000:1000 /mnt/data /mnt/docker
+sudo usermod -aG docker nextcloud
 
 # docker-compose.yml für die Container erstellen
 echo "Creating /mnt/docker/docker-compose.yml"
