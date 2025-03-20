@@ -6,7 +6,10 @@ Mit sudo-Rechten wird das erste Script ausgeführt:
 1_nextcloud_stack_installer.sh
 
 Ist dieses erfolgreich durchgelaufen kommt am Ende eine Zusammenfassung mit den nötigen Daten, die im nächsten Schritt in Nextcloud-Web Oberfläche bei der Erst-Einrichtung eingegeben werden müssen.
-Nachdem die Erst-Einrichtung erfolgt ist, und man erfolgreich mit seinem ersten Konto in der Nextcloud angemeldet ist, kann jetzt das zweite Script ausgeführt werden. Diese kann ohne sudo Rechte ausgeführt werden.
+Nachdem die Erst-Einrichtung erfolgt ist, und man erfolgreich mit seinem ersten Konto in der Nextcloud angemeldet ist, kann jetzt das zweite Script ausgeführt werden. 
+Zuvor bitte einmal am Linux-Rechner ab- und wieder anmelden, damit der User den Docker-Zugriff erhält.
+
+Jetzt kann 2. Script ohne sudo Rechte ausgeführt werden.
 2_after-first-setup.sh
 
 Das zweite Script sorgt für ein paar wichtige Einstellungen, die noch in der Nextcloud vorgenommen werden müssen.
