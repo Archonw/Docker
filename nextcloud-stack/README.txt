@@ -1,31 +1,4 @@
 Nach dem Ausführen des Scriptes und der Ersteinrichtung der Nextcloud, werden in der Verwaltungsübersicht der Nextcloud einige Fehler auftreten.
-Einige davon werden mit einigen zusätzlichen Zeilen in der Nextcloud config.php behandelt. Dazu im Terminal mittels z.B. Nano folgende Pfad öffnen:
-
-nano /mnt/docker/Nextcloud/config/www/nextcloud/config/config.php
-
-
-und fügen folgendes am Ende aber vor der letzten Klammer  );  ein:
-
-  'memcache.locking' => '\\OC\\Memcache\\Redis',
-  'redis' => [
-    'host' => 'redis',
-    'port' => 6379,
-    'timeout' => 0.0,
-   ],
-  'default_phone_region' => 'DE',
-  'maintenance_window_start' => 1,
-
-
-Abspeichern und schließen mittels Strg+o und Strg+x
-
-
-Jetzt werden wir noch zwei Befehel ausführen, um einige fehlende Einträge in der Nextcloud Datenbank anzulegen.
-Dazu folgende zwei Befehle im Terminal ausführen.
-
-
-docker exec -it nextcloud occ maintenance:repair --include-expensive
-
-docker exec -it nextcloud occ db:add-missing-indices
-
-
+Einige davon werden mit einigen zusätzlichen Zeilen in der Nextcloud config.php behandelt.
+Dazu das script "after-first-setup.sh" ausführen.
 Jetzt sollten die meisten Warnungen verschuwnden sein.
