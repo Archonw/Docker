@@ -29,9 +29,11 @@ add_config_entry() {
 
 # mimetypes migtration Anpassung
 docker exec -it nextcloud occ maintenance:repair --include-expensive
+echo "Mimetypes migrations wurde ausgeführ"
 
 # fehlende Indizes einfügen
 docker exec -it nextcloud occ db:add-missing-indices
+echo "Fehlende Indizes wurden ergänzt"
 
 # Einträge setzen
 add_config_entry "memcache.local" "'\\\\OC\\\\Memcache\\\\APCu'"
