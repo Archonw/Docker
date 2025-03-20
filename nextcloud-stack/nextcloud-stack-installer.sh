@@ -10,11 +10,11 @@ read -p "Bitte geben Sie ein MySQL Root Passwort ein: " MYSQL_ROOT_PASSWORD
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 echo ""
 
-read -p "Bitte geben Sie einen Namen für das Datenbankkonto ein (Standard: nextcloud): " MYSQL_DATABASE
+read -p "Bitte geben Sie einen Namen für das Datenbank-Name ein (Standard: nextcloud): " MYSQL_DATABASE
 MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud}
 echo ""
 
-read -p "Bitte geben Sie einen Datenbank-Namen ein (Standard: nextcloud): " MYSQL_USER
+read -p "Bitte geben Sie einen Datenbankkonto ein (Standard: nextcloud): " MYSQL_USER
 MYSQL_USER=${MYSQL_USER:-nextcloud}
 echo ""
 
@@ -163,10 +163,10 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
     echo "📌 **Datenbank-Konfiguration für die Nextcloud-Einrichtung**"
     echo "------------------------------------------"
     echo " 🔹 **Datenbank-Typ:**      MySQL/MariaDB"
-    echo " 🔹 **Datenbank-Host:**     mariadb:443"
-    echo " 🔹 **Datenbank-Name:**     ${MYSQL_DATABASE}"
-    echo " 🔹 **Datenbank-Benutzer:** ${MYSQL_USER}"
+    echo " 🔹 **Datenbankkonto:**     ${MYSQL_USER}"
     echo " 🔹 **Datenbank-Passwort:** ${MYSQL_PASSWORD}"
+    echo " 🔹 **Datenbank-Name:**     ${MYSQL_DATABASE}"
+    echo " 🔹 **Datenbank-Host:**     mariadb:443"
     echo "------------------------------------------"
     echo "ℹ️  Bitte notiere dir diese Daten für die Ersteinrichtung in der Nextcloud-Weboberfläche."
     echo ""
