@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Sicherstellen, dass das Skript mit root-Rechten ausgeführt wird
-if [ "$EUID" -ne 0 ]; then
-    echo "❌ Fehler: Dieses Skript muss mit sudo oder als root ausgeführt werden!"
-    echo "Bitte starte es erneut mit:"
-    echo "   sudo $0"
-    exit 1
-fi
-
 # Benutzer informieren
 echo "Die folgenden Eingaben betreffen die MariaDB-Datenbankkonfiguration."
 echo "Diese Daten werden in der Datei /mnt/docker/Mariadb/docker-compose.yml gespeichert und werden bei der Ersteinrichtung von Nextcloud erneut benötigt."
@@ -65,7 +57,6 @@ echo "Creating directories..."
 sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
 sudo chown -R "$USER_ID:$GROUP_ID" /mnt/data /mnt/docker
 sudo usermod -aG docker "$DOCKER_USER"
-docker context use default
 
 # docker-compose.yml für die Container erstellen
 echo "Creating /mnt/docker/docker-compose.yml"
@@ -138,7 +129,9 @@ networks:
 EOL
 
 
-cd /mnt/docker/ && docker-compose up -d
+newgrp docker <<EOF
+cd /mnt/docker/
+docker-compose up -d
 
 
 SERVER_IP=$(hostname -I | awk '{print $1}')
@@ -189,3 +182,5 @@ else
     echo "   docker logs <container_name>"
     exit 1
 fi
+
+EOF
