@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Sicherstellen, dass das Skript mit root-Rechten ausgeführt wird
+if [ "$EUID" -ne 0 ]; then
+    echo "❌ Fehler: Dieses Skript muss mit sudo oder als root ausgeführt werden!"
+    echo "Bitte starte es erneut mit:"
+    echo "   sudo $0"
+    exit 1
+fi
+
 # Benutzer informieren
 echo "Die folgenden Eingaben betreffen die MariaDB-Datenbankkonfiguration."
 echo "Diese Daten werden in der Datei /mnt/docker/Mariadb/docker-compose.yml gespeichert und werden bei der Ersteinrichtung von Nextcloud erneut benötigt."
