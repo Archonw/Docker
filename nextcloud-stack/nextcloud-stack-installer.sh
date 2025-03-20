@@ -57,6 +57,7 @@ echo "Creating directories..."
 sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
 sudo chown -R "$USER_ID:$GROUP_ID" /mnt/data /mnt/docker
 sudo usermod -aG docker "$DOCKER_USER"
+docker context use default
 
 # docker-compose.yml für die Container erstellen
 echo "Creating /mnt/docker/docker-compose.yml"
