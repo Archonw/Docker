@@ -166,7 +166,7 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
     echo " 🔹 **Datenbankkonto:**     ${MYSQL_USER}"
     echo " 🔹 **Datenbank-Passwort:** ${MYSQL_PASSWORD}"
     echo " 🔹 **Datenbank-Name:**     ${MYSQL_DATABASE}"
-    echo " 🔹 **Datenbank-Host:**     mariadb:443"
+    echo " 🔹 **Datenbank-Host:**     mariadb:3306"
     echo "------------------------------------------"
     echo "ℹ️  Bitte notiere dir diese Daten für die Ersteinrichtung in der Nextcloud-Weboberfläche."
     echo ""
