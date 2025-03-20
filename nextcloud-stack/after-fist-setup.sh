@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Test, ob der Benutzer auf den Docker-Daemon zugreifen kann
+if ! docker info &>/dev/null; then
+    echo "❌ Fehler: Der aktuelle Benutzer hat keine Berechtigung, Docker-Befehle auszuführen."
+    echo "ℹ️  Bitte melde dich einmal ab und wieder an, um die neuen Gruppenrechte zu übernehmen."
+    echo "🔄 Danach kannst du das Skript erneut starten."
+    exit 1
+fi
+
+echo "✅ Benutzer hat Docker-Berechtigungen. Skript wird fortgesetzt..."
+
 CONFIG_FILE="/mnt/docker/Nextcloud/config/www/nextcloud/config/config.php"
 BACKUP_FILE="${CONFIG_FILE}.bak"
 
