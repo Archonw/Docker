@@ -27,6 +27,12 @@ add_config_entry() {
     fi
 }
 
+# mimetypes migtration Anpassung
+docker exec -it nextcloud occ maintenance:repair --include-expensive
+
+# fehlende Indizes einfügen
+docker exec -it nextcloud occ db:add-missing-indices
+
 # Einträge setzen
 add_config_entry "memcache.local" "'\\\\OC\\\\Memcache\\\\APCu'"
 add_config_entry "memcache.locking" "'\\\\OC\\\\Memcache\\\\Redis'"
