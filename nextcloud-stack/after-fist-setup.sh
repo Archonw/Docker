@@ -13,23 +13,39 @@ fi
 cp "$CONFIG_FILE" "$BACKUP_FILE"
 echo "📄 Backup wurde erstellt: $BACKUP_FILE"
 
-# Prüfen und Einfügen der Konfigurationen
-declare -A CONFIG_ENTRIES=(
-    ["'memcache.local' => '\\\\OC\\\\Memcache\\\\APCu',"]="✅ 'memcache.local' ist bereits gesetzt."
-    ["'memcache.locking' => '\\\\OC\\\\Memcache\\\\Redis',"]="✅ 'memcache.locking' ist bereits gesetzt."
-    ["'redis' => array (\n    'host' => 'redis',\n    'password' => '',\n    'port' => 6379,\n  ),"]="✅ Redis-Konfiguration ist bereits vorhanden."
-    ["'default_phone_region' => 'DE',"]="✅ 'default_phone_region' ist bereits gesetzt."
-    ["'maintenance_window_start' => 1,"]="✅ 'maintenance_window_start' ist bereits gesetzt."
-)
+# Funktion zum sicheren Einfügen einer Konfiguration
+add_config_entry() {
+    local key="$1"
+    local value="$2"
 
-for ENTRY in "${!CONFIG_ENTRIES[@]}"; do
-    if grep -qF "$ENTRY" "$CONFIG_FILE"; then
-        echo "${CONFIG_ENTRIES[$ENTRY]}"
+    if grep -qE "^[[:space:]]*'$key'" "$CONFIG_FILE"; then
+        echo "✅ $key ist bereits gesetzt."
     else
         sed -i "/);/i \\
-  $ENTRY" "$CONFIG_FILE"
-        echo "✅ $ENTRY erfolgreich hinzugefügt."
+  '$key' => $value," "$CONFIG_FILE"
+        echo "✅ $key erfolgreich hinzugefügt."
     fi
-done
+}
+
+# Einträge setzen
+add_config_entry "memcache.local" "'\\\\OC\\\\Memcache\\\\APCu'"
+add_config_entry "memcache.locking" "'\\\\OC\\\\Memcache\\\\Redis'"
+
+# Redis-Block nur hinzufügen, wenn er nicht existiert
+if ! grep -qE "^[[:space:]]*'redis'" "$CONFIG_FILE"; then
+    sed -i "/);/i \\
+  'redis' => array (\\
+    'host' => 'redis',\\
+    'password' => '',\\
+    'port' => 6379,\\
+  )," "$CONFIG_FILE"
+    echo "✅ Redis-Konfiguration erfolgreich hinzugefügt."
+else
+    echo "✅ Redis-Konfiguration ist bereits vorhanden."
+fi
+
+# Phone Region & Maintenance Window prüfen
+add_config_entry "default_phone_region" "'DE'"
+add_config_entry "maintenance_window_start" "1"
 
 echo "✅ Alle Konfigurationen wurden aktualisiert."
