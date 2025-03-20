@@ -2,7 +2,7 @@
 
 # Benutzer informieren
 echo "Die folgenden Eingaben betreffen die MariaDB-Datenbankkonfiguration."
-echo "Diese Daten werden in der Datei /mnt/docker/Mariadb/docker-compose.yml gespeichert und werden bei der Ersteinrichtung von Nextcloud erneut benötigt."
+echo "Diese Daten werden in der Datei /mnt/docker/docker-compose.yml gespeichert und werden bei der Ersteinrichtung von Nextcloud erneut benötigt."
 echo ""
 
 # Benutzereingaben für MariaDB-Konfiguration
@@ -45,7 +45,7 @@ if ! command -v curl &> /dev/null; then
     sudo apt-get install -y curl
 fi
 echo ""
-
+echo "Wenn Pakete fehlen werden diese installiert. Dafür muss das sudo Passwort eingegeben werden"
 # Docker und Docker Compose Installation
 echo "Installing Docker..."
 curl -fsSL https://get.docker.com -o get-docker.sh
