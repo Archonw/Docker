@@ -2,16 +2,21 @@ Mit diesen Scripts kann unter Debian-basierten Distributionen eine Nextcloud-Doc
 
 Vorgehensweise:
 
-Mit sudo-Rechten wird das erste Script ausgeführt:
-1_nextcloud_stack_installer.sh
+1.
+Ausführen von: nextcloud_stack_installer.sh
+
+Es wird das erste Script ausgeführt. Dabei werden Eingaben für die MariaDB Datenbank abgefragt,
+und es muss der Linux-User angegeben werden, der die Docker Container verwalten soll.
 
 Ist dieses erfolgreich durchgelaufen kommt am Ende eine Zusammenfassung mit den nötigen Daten, die im nächsten Schritt in Nextcloud-Web Oberfläche bei der Erst-Einrichtung eingegeben werden müssen.
 Nachdem die Erst-Einrichtung erfolgt ist, und man erfolgreich mit seinem ersten Konto in der Nextcloud angemeldet ist, kann jetzt das zweite Script ausgeführt werden. 
 
-Zuvor bitte einmal am Linux-Rechner ab- und wieder anmelden, damit der User den Docker-Zugriff erhält.
 
-Jetzt kann 2. Script ohne sudo Rechte ausgeführt werden.
-2_after-first-setup.sh
+
+2. 
+Bitte einmal am Linux-Rechner ab- und wieder anmelden, damit der User den Docker-Zugriff erhält, dann
+
+Ausführen von: after-first-setup.sh
 
 Das zweite Script sorgt für ein paar wichtige Einstellungen, die noch in der Nextcloud vorgenommen werden müssen.
 Navigiert man im Anschluss in seinem Nextcloud-Konto zu der Administrationseinstellungen und dort zur üBersicht, so sollten nur noch wenige Fehlermeldungen zu sehene sein.
