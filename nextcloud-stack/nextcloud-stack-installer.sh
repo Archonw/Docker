@@ -102,6 +102,13 @@ services:
     networks:
       - nextcloud_network
 
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: unless-stopped
+    networks:
+      - nextcloud_network
+
   nginx-proxy-manager:
     image: 'docker.io/jc21/nginx-proxy-manager:latest'
     container_name: nginx-proxy-manager
