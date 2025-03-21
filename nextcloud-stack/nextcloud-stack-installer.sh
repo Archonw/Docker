@@ -114,6 +114,7 @@ networks:
     driver: bridge
 EOL
 
+SERVER_IP=$(hostname -I | awk '{print $1}')
 
 newgrp docker <<EOF
 cd /mnt/docker/
