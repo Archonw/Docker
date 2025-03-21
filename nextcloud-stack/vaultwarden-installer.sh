@@ -81,7 +81,7 @@ echo ""
 
 
 else
-    echo "❌ ACHTUNG: Einige Container konnten nicht gestartet werden!"
+    echo "❌ ACHTUNG: Der Container konnten nicht gestartet werden!"
     for CONTAINER in "${FAILED_CONTAINERS[@]}"; do
         echo "   - $CONTAINER (Status: nicht 'running')"
     done
