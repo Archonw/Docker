@@ -14,7 +14,7 @@ mkdir -p "$DOCKER_DIR"
 
 # docker-compose.yml für Vaultwarden erstellen
 echo "📝 Erstelle docker-compose.yml für Vaultwarden..."
-cat <<EOL > "$INSTALL_DIR/docker-compose.yml"
+cat <<EOL > "$DOCKER_DIR/docker-compose.yml"
 version: '3.8'
 
 services:
