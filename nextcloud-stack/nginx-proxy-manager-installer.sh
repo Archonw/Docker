@@ -1,7 +1,9 @@
 
 #!/bin/bash
 
-echo "🔧 Dieses Skript installiert den Nginx Proxy Manager als Docker-Container."
+# Benutzer informieren
+echo "Dieses Skript installiert Nginx-Proxy-Manager als Docker-Container."
+echo ""
 
 # Speicherpfad für die docker-compose.yml
 DOCKER_DIR="/mnt/docker/nginx-proxy-manager"
@@ -12,7 +14,7 @@ sudo mkdir -p "$DOCKER_DIR"
 sudo chown $(id -u):$(id -g) "$DOCKER_DIR"
 
 # docker-compose.yml erstellen
-echo "📝 Erstelle docker-compose.yml..."
+echo "📝 Erstelle docker-compose.yml für Nginx-Proxy-Manager..."
 cat <<EOL > "$DOCKER_DIR/docker-compose.yml"
 version: '3.8'
 
@@ -41,6 +43,37 @@ echo "🚀 Starte Nginx Proxy Manager..."
 cd "$DOCKER_DIR"
 docker-compose up -d
 
+# Warten, damit Container Zeit haben zu starten
+sleep 5
+
+
+# Überprüfen, ob alle Container im Status "running" sind
+CONTAINERS=("vaultwarden")
+FAILED_CONTAINERS=()
+
+for CONTAINER in "${CONTAINERS[@]}"; do
+    STATUS=$(docker inspect -f '{{.State.Running}}' "$CONTAINER" 2>/dev/null)
+
+    if [ "$STATUS" != "true" ]; then
+        FAILED_CONTAINERS+=("$CONTAINER")
+    fi
+done
+
+if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
+    SERVER_IP=$(hostname -I | awk '{print $1}')
+
 # Erfolgsmeldung
-echo "✅ Nginx Proxy Manager wurde erfolgreich installiert!"
-echo "📌 Webinterface erreichbar unter: http://<SERVER-IP>:20081"
+echo ""
+echo "✅ Nginx-Proxy-Manager wurde erfolgreich installiert!"
+echo "📌 Webinterface: http://$(hostname -I | awk '{print $1}'):4743/admin"
+echo ""
+
+else
+    echo "❌ ACHTUNG: Der Container konnten nicht gestartet werden!"
+    for CONTAINER in "${FAILED_CONTAINERS[@]}"; do
+        echo "   - $CONTAINER (Status: nicht 'running')"
+    done
+    echo "📄 Bitte überprüfe die Logs mit:"
+    echo "   docker logs <container_name>"
+    exit 1
+fi
