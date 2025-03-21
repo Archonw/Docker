@@ -109,20 +109,6 @@ services:
     networks:
       - nextcloud_network
 
-  nginx-proxy-manager:
-    image: 'docker.io/jc21/nginx-proxy-manager:latest'
-    container_name: nginx-proxy-manager
-    restart: unless-stopped
-    ports:
-      - '20080:80'
-      - '20081:81'
-      - '20443:443'
-    volumes:
-      - /mnt/docker/Nginx-Proxy-Manager/data:/data
-      - /mnt/docker/Nginx-Proxy-Manager/letsencrypt:/etc/letsencrypt
-    networks:
-      - nextcloud_network
-
 networks:
   nextcloud_network:
     driver: bridge
