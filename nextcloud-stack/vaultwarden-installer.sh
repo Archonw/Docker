@@ -9,11 +9,11 @@ read -sp "Bitte geben Sie den Admin-Token für Vaultwarden ein: " ADMIN_TOKEN
 echo ""
 
 # Verzeichnis für Vaultwarden erstellen
-INSTALL_DIR="/mnt/docker/vaultwarden"
-mkdir -p "$INSTALL_DIR"
+DOCKER_DIR="/mnt/docker/vaultwarden"
+mkdir -p "$DOCKER_DIR"
 
 # docker-compose.yml für Vaultwarden erstellen
-echo "Erstelle docker-compose.yml für Vaultwarden..."
+echo "📝 Erstelle docker-compose.yml für Vaultwarden..."
 cat <<EOL > "$INSTALL_DIR/docker-compose.yml"
 version: '3.8'
 
@@ -45,8 +45,8 @@ networks:
 EOL
 
 # Vaultwarden-Container starten
-echo "Starte Vaultwarden-Container..."
-cd "$INSTALL_DIR"
+echo "🚀 Starte Vaultwarden-Container..."
+cd "$DOCKER_DIR"
 docker-compose up -d
 
 SERVER_IP=$(hostname -I | awk '{print $1}')
