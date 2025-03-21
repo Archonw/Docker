@@ -121,9 +121,6 @@ cd /mnt/docker/
 docker-compose up -d
 
 
-SERVER_IP=$(hostname -I | awk '{print $1}')
-
-
 # Warten, damit Container Zeit haben zu starten
 sleep 5
 
