@@ -128,7 +128,7 @@ sleep 5
 
 
 # Überprüfen, ob alle Container im Status "running" sind
-CONTAINERS=("mariadb" "nextcloud" "nginx-proxy-manager")
+CONTAINERS=("mariadb" "nextcloud" "redis")
 FAILED_CONTAINERS=()
 
 for CONTAINER in "${CONTAINERS[@]}"; do
