@@ -23,6 +23,11 @@ Navigiert man im Anschluss in seinem Nextcloud-Konto zu der Administrationseinst
 
 Die Meldung zur E-Mail-Serverkonfiguration lässt sich beheben, in dem in in den Administrationseinstellungen unter Grundeinstellungen den E-Mail-Server einstellt.
 
+
 Optional:
-Es kann zusätzlich noch der Vaultwarden-Container (Passwort-Manager) dazu installiert werden.
-Dazu ausführen von vaultwarden-installer.sh
+
+- nginx-proxy-manager-installer.sh 
+Damit kann der Nginx-Proxy-Manager installiert werden. Ein einfach zu bedienender Proxy Manager danke WebGUI.
+
+- vaultwarden-installer.sh
+Das ist installiert den Vaultwalden Passwortmanager.
