@@ -65,7 +65,7 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
 # Erfolgsmeldung
 echo ""
 echo "✅ Nginx-Proxy-Manager wurde erfolgreich installiert!"
-echo "📌 Webinterface: http://$(hostname -I | awk '{print $1}'):4743/admin"
+echo "📌 Webinterface: http://$(hostname -I | awk '{print $1}'):20081"
 echo ""
 
 else
