@@ -1,4 +1,4 @@
-Mit diesen Scripts kann unter Debian-basierten Distributionen eine Nextcloud-Docker Installation ausgeführt werden
+Mit diesen Scripts kann unter Debian-basierten Distributionen eine Nextcloud-Docker Installation ausgeführt werden.
 
 Vorgehensweise:
 
@@ -22,3 +22,7 @@ Das zweite Script sorgt für ein paar wichtige Einstellungen, die noch in der Ne
 Navigiert man im Anschluss in seinem Nextcloud-Konto zu der Administrationseinstellungen und dort zur üBersicht, so sollten nur noch wenige Fehlermeldungen zu sehene sein.
 
 Die Meldung zur E-Mail-Serverkonfiguration lässt sich beheben, in dem in in den Administrationseinstellungen unter Grundeinstellungen den E-Mail-Server einstellt.
+
+Optional:
+Es kann zusätzlich noch der Vaultwarden-Container (Passwort-Manager) dazu installiert werden.
+Dazu ausführen von vaultwarden-installer.sh
