@@ -48,7 +48,7 @@ sleep 5
 
 
 # Überprüfen, ob alle Container im Status "running" sind
-CONTAINERS=("vaultwarden")
+CONTAINERS=("nginx-proxy-manager")
 FAILED_CONTAINERS=()
 
 for CONTAINER in "${CONTAINERS[@]}"; do
