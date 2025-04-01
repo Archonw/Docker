@@ -23,7 +23,7 @@ MYSQL_PASSWORD=${MYSQL_PASSWORD}
 echo ""
 
 # Benutzer für Docker-Gruppe abfragen
-read -p "Welchen Linux-Benutzer wird die Docker-Container verwalten?: " DOCKER_USER
+read -p "Welcher Linux-Benutzer wird die Docker-Container verwalten? (Standard ist derjenige der gerade verwendet wird): " DOCKER_USER
 echo ""
 
 # UID und GID des Benutzers ermitteln
