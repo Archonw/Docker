@@ -10,7 +10,7 @@ read -p "Bitte geben Sie ein MySQL Root Passwort ein: " MYSQL_ROOT_PASSWORD
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 echo ""
 
-read -p "Bitte geben Sie einen Namen für das Datenbank-Name ein: " MYSQL_DATABASE
+read -p "Bitte geben Sie einen Datenbank-Name ein: " MYSQL_DATABASE
 MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud}
 echo ""
 
