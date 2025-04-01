@@ -24,9 +24,9 @@ services:
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
-      - '20080:80'
-      - '20081:81'
-      - '20443:443'
+      - '21080:80'
+      - '21081:81'
+      - '21443:443'
     volumes:
       - /mnt/docker/Nginx-Proxy-Manager/data:/data
       - /mnt/docker/Nginx-Proxy-Manager/letsencrypt:/etc/letsencrypt
