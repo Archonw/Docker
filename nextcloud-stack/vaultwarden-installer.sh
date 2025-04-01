@@ -34,7 +34,7 @@ services:
     volumes:
       - /mnt/docker/vaultwarden/data:/data
     ports:
-      - "4743:80"  # WebUI Port
+      - "22443:80"  # WebUI Port
     networks:
       - nextcloud_network
 
@@ -75,7 +75,7 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
 # Erfolgsmeldung
 echo ""
 echo "✅ Vaultwarden wurde erfolgreich installiert!"
-echo "📌 Webinterface: http://$(hostname -I | awk '{print $1}'):4743/admin"
+echo "📌 Webinterface: http://$(hostname -I | awk '{print $1}'):22443/admin"
 echo ""
 
 
