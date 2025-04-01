@@ -8,12 +8,14 @@ Ausführen von: nextcloud_stack_installer.sh
 Es wird das erste Script ausgeführt. Dabei werden Eingaben für die MariaDB Datenbank abgefragt,
 und es muss der Linux-User angegeben werden, der die Docker Container verwalten soll.
 
-Ist dieses erfolgreich durchgelaufen kommt am Ende eine Zusammenfassung mit den nötigen Daten, die im nächsten Schritt in Nextcloud-Web Oberfläche bei der Erst-Einrichtung eingegeben werden müssen.
+2.
+Öffne die Webseite deiner Nextcloud. Die Adresse ist steht im Terminal.
+ - Fülle die notwendigen Felder aus. Den Benutzernamen und das Passwort musst du frei vergebene.
+ - Als Datenbank wähle MariaDB aus
+
 Nachdem die Erst-Einrichtung erfolgt ist, und man erfolgreich mit seinem ersten Konto in der Nextcloud angemeldet ist, kann jetzt das zweite Script ausgeführt werden. 
 
-
-
-2. 
+3. 
 Bitte einmal am Linux-Rechner ab- und wieder anmelden, damit der User den Docker-Zugriff erhält, dann
 
 Ausführen von: after-first-setup.sh
