@@ -11,7 +11,13 @@ und es muss der Linux-User angegeben werden, der die Docker Container verwalten 
 2.
 Öffne die Webseite deiner Nextcloud. Die Adresse ist steht im Terminal.
  - Fülle die notwendigen Felder aus. Den Benutzernamen und das Passwort musst du frei vergebene.
- - Als Datenbank wähle MariaDB aus
+ - KLicke auf Speicher & Datenbank
+ - lasse /data im Feld Datenverzeichnis stehen
+ - bei Datenbank einrichten klicke Mysql/MariaDB an
+ - Die Werte für die folgenden Felder stehen im Terminal in der Zusammenfassung
+
+Jetzt Kannst du auf Installieren klicken. Danach kannst du anwählen welche Software mit installiert werden soll.
+
 
 Nachdem die Erst-Einrichtung erfolgt ist, und man erfolgreich mit seinem ersten Konto in der Nextcloud angemeldet ist, kann jetzt das zweite Script ausgeführt werden. 
 
