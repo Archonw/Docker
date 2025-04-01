@@ -77,7 +77,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - /mnt/docker/Mariadb/config:/config
-      - /mnt/data:/data
+      - /mnt/nextcloud/data:/data
     ports:
       - 3306:3306
     restart: unless-stopped
@@ -92,10 +92,10 @@ services:
       - PGID=$GROUP_ID
       - TZ=Europe/Berlin
     volumes:
-      - /mnt/docker/Nextcloud/config:/config
-      - /mnt/data:/data
+      - /mnt/docker/nextcloud/config:/config
+      - /mnt/nextcloud/data:/data
     ports:
-      - 443:443
+      - 20443:443
     depends_on:
       - mariadb
     restart: unless-stopped
@@ -143,7 +143,7 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
     echo "✅ Alle Container wurden erfolgreich gestartet."
     echo ""
     echo "Nextcloud ist jetzt unter folgender Adresse erreichbar:"
-    echo "   🌐 https://${SERVER_IP}:443"
+    echo "   🌐 https://${SERVER_IP}:20443"
 
     echo ""
     echo "📌 **Datenbank-Konfiguration für die Nextcloud-Einrichtung**"
