@@ -54,7 +54,7 @@ sudo apt install -y docker-compose
 
 # Verzeichnisse erstellen
 echo "Creating directories..."
-sudo mkdir -p /mnt/docker/Nginx-Proxy-Manager /mnt/docker/Nextcloud /mnt/docker/Mariadb /mnt/data
+sudo mkdir -p /mnt/docker/nginx-Proxy-Manager /mnt/docker/nextcloud /mnt/docker/mariadb 
 sudo chown -R "$USER_ID:$GROUP_ID" /mnt/data /mnt/docker
 sudo usermod -aG docker "$DOCKER_USER"
 
@@ -76,7 +76,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - /mnt/docker/Mariadb/config:/config
+      - /mnt/docker/mariadb/config:/config
     ports:
       - 3306:3306
     restart: unless-stopped
