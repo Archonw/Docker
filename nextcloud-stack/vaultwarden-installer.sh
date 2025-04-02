@@ -4,12 +4,14 @@
 echo "Dieses Skript installiert Vaultwarden als Docker-Container."
 echo ""
 
+# Speicherpfad für die docker-compose.yml
+DOCKER_DIR="/mnt/docker/vaultwarden"
+
 # Admin-Token abfragen
 read -sp "Bitte geben Sie den Admin-Token für Vaultwarden ein: " ADMIN_TOKEN
 echo ""
 
 # Verzeichnis für Vaultwarden erstellen
-DOCKER_DIR="/mnt/docker/vaultwarden"
 mkdir -p "$DOCKER_DIR"
 
 # docker-compose.yml für Vaultwarden erstellen
