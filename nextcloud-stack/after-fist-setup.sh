@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SERVER_IP=$(hostname -I | awk '{print $1}')
+DATA_DIR=/mnt/docker/nextcloud/data
 
 # Test, ob der Benutzer auf den Docker-Daemon zugreifen kann
 if ! docker info &>/dev/null; then
