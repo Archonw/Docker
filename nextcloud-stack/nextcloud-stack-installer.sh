@@ -141,8 +141,6 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
     echo ""
     echo "✅ Alle Container wurden erfolgreich gestartet."
     echo ""
-    echo "Nextcloud ist jetzt unter folgender Adresse erreichbar:"
-    echo "   🌐 https://${SERVER_IP}:20443"
 
     echo ""
     echo "📌 **Datenbank-Konfiguration für die Nextcloud-Einrichtung**"
@@ -153,7 +151,9 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
     echo " 🔹 **Datenbank-Name:**     ${MYSQL_DATABASE}"
     echo " 🔹 **Datenbank-Host:**     mariadb:3306"
     echo "------------------------------------------"
-    echo "ℹ️  Bitte notiere dir diese Daten für die Ersteinrichtung in der Nextcloud-Weboberfläche."
+    echo ""
+    echo "ℹ️ öffne folgenden Link und schließe dort die Einrichtung der Nextcloud ab."
+    echo "         🌐 https://${SERVER_IP}:20443"
     echo ""
 
 else
