@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SERVER_IP=$(hostname -I | awk '{print $1}')
+
 # Test, ob der Benutzer auf den Docker-Daemon zugreifen kann
 if ! docker info &>/dev/null; then
     echo "❌ Fehler: Der aktuelle Benutzer hat keine Berechtigung, Docker-Befehle auszuführen."
@@ -14,7 +16,7 @@ echo "✅ Benutzer hat Docker-Berechtigungen. Skript wird fortgesetzt..."
 if ! ls "$DATA_DIR" | grep -q '^appdata'; then
     echo "❌ Fehler: Du hast die Nextcloud noch nicht vollständig eingerichtet."
     echo "ℹ️  Bitte schließe zuerst die Erst-Einrichtung der Nextcloud ab."
-    echo " öffne 
+    echo "            🌐 https://${SERVER_IP}:20443"
     exit 1
 fi
 
