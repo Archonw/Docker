@@ -10,6 +10,15 @@ fi
 
 echo "✅ Benutzer hat Docker-Berechtigungen. Skript wird fortgesetzt..."
 
+# Überprüfen, ob eine Datei existiert, die mit 'appdata' beginnt
+if ! ls "$DATA_DIR" | grep -q '^appdata'; then
+    echo "❌ Fehler: Es wurde keine Datei gefunden, die mit 'appdata' beginnt."
+    echo "ℹ️  Bitte schließe zuerst die Erst-Einrichtung der Nextcloud ab."
+    exit 1
+fi
+
+echo "✅ Nextcloud-Einrichtung scheint abgeschlossen zu sein. Skript wird fortgesetzt..."
+
 CONFIG_FILE="/mnt/docker/nextcloud/config/www/nextcloud/config/config.php"
 BACKUP_FILE="${CONFIG_FILE}.bak"
 
