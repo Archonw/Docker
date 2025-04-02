@@ -153,6 +153,7 @@ if [ ${#FAILED_CONTAINERS[@]} -eq 0 ]; then
     echo "------------------------------------------"
     echo ""
     echo "ℹ️ öffne folgenden Link und schließe dort die Einrichtung der Nextcloud ab."
+    echo ""
     echo "         🌐 https://${SERVER_IP}:20443"
     echo ""
 
