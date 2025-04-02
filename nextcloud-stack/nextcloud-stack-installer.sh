@@ -54,7 +54,7 @@ sudo apt install -y docker-compose
 
 # Verzeichnisse erstellen
 echo "Creating directories..."
-sudo mkdir -p /mnt/docker/nginx-Proxy-Manager /mnt/docker/nextcloud /mnt/docker/mariadb 
+sudo mkdir -p /mnt/docker/nextcloud /mnt/docker/mariadb 
 sudo chown -R "$USER_ID:$GROUP_ID" /mnt/data /mnt/docker
 sudo usermod -aG docker "$DOCKER_USER"
 
