@@ -23,7 +23,7 @@ Nachdem die Erst-Einrichtung erfolgt ist, und man erfolgreich mit seinem ersten 
 3. 
 Bitte einmal am Linux-Rechner ab- und wieder anmelden, damit der User den vollen Docker-Zugriff erhält, dann
 
-Ausführen von: after-first-setup.sh
+Ausführen von: behebe-mextcloud-fehler.sh
 
 Das zweite Script sorgt für ein paar wichtige Einstellungen, die noch in der Nextcloud vorgenommen werden müssen.
 Navigiert man im Anschluss in seinem Nextcloud-Konto zu der Administrationseinstellungen und dort zur üBersicht, so sollten nur noch wenige Fehlermeldungen zu sehene sein.
