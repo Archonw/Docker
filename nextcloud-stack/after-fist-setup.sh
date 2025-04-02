@@ -10,7 +10,7 @@ fi
 
 echo "✅ Benutzer hat Docker-Berechtigungen. Skript wird fortgesetzt..."
 
-CONFIG_FILE="/mnt/docker/Nextcloud/config/www/nextcloud/config/config.php"
+CONFIG_FILE="/mnt/docker/nextcloud/config/www/nextcloud/config/config.php"
 BACKUP_FILE="${CONFIG_FILE}.bak"
 
 # Überprüfen, ob die Datei existiert
