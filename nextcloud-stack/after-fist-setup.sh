@@ -12,8 +12,9 @@ echo "✅ Benutzer hat Docker-Berechtigungen. Skript wird fortgesetzt..."
 
 # Überprüfen, ob eine Datei existiert, die mit 'appdata' beginnt
 if ! ls "$DATA_DIR" | grep -q '^appdata'; then
-    echo "❌ Fehler: Es wurde keine Datei gefunden, die mit 'appdata' beginnt."
+    echo "❌ Fehler: Du hast die Nextcloud noch nicht vollständig eingerichtet."
     echo "ℹ️  Bitte schließe zuerst die Erst-Einrichtung der Nextcloud ab."
+    echo " öffne 
     exit 1
 fi
 
