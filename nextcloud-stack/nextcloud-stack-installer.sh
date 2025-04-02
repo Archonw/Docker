@@ -77,7 +77,6 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - /mnt/docker/Mariadb/config:/config
-      - /mnt/nextcloud/data:/data
     ports:
       - 3306:3306
     restart: unless-stopped
@@ -93,7 +92,7 @@ services:
       - TZ=Europe/Berlin
     volumes:
       - /mnt/docker/nextcloud/config:/config
-      - /mnt/nextcloud/data:/data
+      - /mnt/docker/nextcloud/data:/data
     ports:
       - 20443:443
     depends_on:
